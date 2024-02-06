@@ -3,6 +3,7 @@ from typing import Dict, Type
 from llama_index.embeddings.base import BaseEmbedding
 from llama_index.embeddings.google import GoogleUnivSentEncoderEmbedding
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from llama_index.embeddings.huggingface_intel import INCEmbedding
 from llama_index.embeddings.langchain import LangchainEmbedding
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.embeddings.text_embeddings_inference import TextEmbeddingsInference
@@ -15,6 +16,7 @@ RECOGNIZED_EMBEDDINGS: Dict[str, Type[BaseEmbedding]] = {
     LangchainEmbedding.class_name(): LangchainEmbedding,
     MockEmbedding.class_name(): MockEmbedding,
     HuggingFaceEmbedding.class_name(): HuggingFaceEmbedding,
+    INCEmbedding.class_name(): INCEmbedding,
     TextEmbeddingsInference.class_name(): TextEmbeddingsInference,
     OpenAIEmbedding.class_name(): OpenAIEmbedding,
 }
