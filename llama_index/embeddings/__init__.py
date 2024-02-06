@@ -33,6 +33,7 @@ from llama_index.embeddings.huggingface import (
     HuggingFaceInferenceAPIEmbeddings,
 )
 from llama_index.embeddings.huggingface_optimum import OptimumEmbedding
+from llama_index.embeddings.huggingface_intel import INCEmbedding
 from llama_index.embeddings.huggingface_utils import DEFAULT_HUGGINGFACE_EMBEDDING_MODEL
 from llama_index.embeddings.instructor import InstructorEmbedding
 from llama_index.embeddings.langchain import LangchainEmbedding
