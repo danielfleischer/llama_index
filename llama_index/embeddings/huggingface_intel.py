@@ -45,9 +45,8 @@ class INCEmbedding(BaseEmbedding):
             from transformers import AutoTokenizer
         except ImportError:
             raise ImportError(
-                "INCEmbedding requires transformers to be installed.\n"
-                "Please install transformers with "
-                "`pip install transformers optimum[neural-compressor]`."
+                "Optimum-Intel requires the following dependencies; please install with "
+                "`pip install optimum[exporters] optimum-intel neural-compressor`."
             )
 
         self._model = model or INCModel.from_pretrained(folder_name)
@@ -80,7 +79,7 @@ class INCEmbedding(BaseEmbedding):
     @classmethod
     def class_name(cls) -> str:
         return "INCEmbedding"
-        
+
     def _mean_pooling(self, model_output: Any, attention_mask: Any) -> Any:
         """Mean Pooling - Take attention mask into account for correct averaging."""
         import torch
@@ -96,7 +95,11 @@ class INCEmbedding(BaseEmbedding):
 
     def _cls_pooling(self, model_output: list) -> Any:
         """Use the CLS token as the pooling token."""
-        return model_output[0][:, 0]
+        if isinstance(model_output, dict):
+            token_embeddings = model_output["last_hidden_state"]
+        else:
+            token_embeddings = model_output[0]
+        return token_embeddings[:, 0]
 
     def _embed(self, sentences: List[str]) -> List[List[float]]:
         """Embed sentences."""
@@ -108,9 +111,6 @@ class INCEmbedding(BaseEmbedding):
             return_tensors="pt",
         )
         import torch
-        
-        # pop token_type_ids
-        encoded_input.pop("token_type_ids", None)
 
         with torch.inference_mode(), torch.cpu.amp.autocast():
             model_output = self._model(**encoded_input)
